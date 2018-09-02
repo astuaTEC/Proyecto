@@ -30,10 +30,10 @@ public class Nodo {
     }
 
     public Nodo getNext(){
-        return this.sgt;
+        return (Nodo) this.sgt;
     }
 
-    public Nodo setNetx(Nodo nodo){
+    public void setNetx(Nodo nodo){
         this.sgt= nodo;
     }
 }
