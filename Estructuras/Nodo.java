@@ -5,10 +5,13 @@
 
 package Estructuras;
 
-public class Nodo {
+public class Nodo<T> {
 
-    private Object data;
-    private Object sgt;
+    private T data;
+    private Nodo<T> sgt;
+
+
+
 
     //constructor
 
@@ -16,24 +19,26 @@ public class Nodo {
      * crea una instancia de Nodo
      * @param data
      */
-    public Nodo(Object data){
+    public Nodo(T data){
         this.sgt = null;
         this.data = data;
     }
+
 
     public Object getData() {
         return data;
     }
 
-    public void setData(Object data) {
+
+    public void setData(T data) {
         this.data = data;
     }
 
     public Nodo getNext(){
-        return (Nodo) this.sgt;
+        return this.sgt;
     }
 
-    public void setNetx(Nodo nodo){
+    public void setNext(Nodo<T> nodo){
         this.sgt= nodo;
     }
 }
