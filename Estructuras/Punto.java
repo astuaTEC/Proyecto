@@ -5,6 +5,8 @@
  */
 package Estructuras;
 
+import java.util.ArrayList;
+
 public class Punto {
     /**
      * métodos de la clase punto
@@ -15,15 +17,15 @@ public class Punto {
     private int izq;
     private int up;
     private int down;
-    private boolean asoDer;
-    private boolean asoIzq;
-    private boolean asoUp;
-    private boolean asoDown;
-    private boolean asoNE;
-    private boolean asoNO;
-    private boolean asoSE;
-    private boolean asoSO;
-
+    private Punto asoDer;
+    private Punto asoIzq;
+    private Punto asoUp;
+    private Punto asoDown;
+    private Punto asoNE;
+    private Punto asoNO;
+    private Punto asoSE;
+    private Punto asoSO;
+    public ArrayList<Punto> vecinos = new ArrayList();
     /**
      * constructor de esta clase
      * @param x
@@ -36,7 +38,6 @@ public class Punto {
         this.izq = x-100;
         this.up= y+100;
         this.down= y-100;
-
     }
 
     /**
@@ -68,35 +69,35 @@ public class Punto {
         return up;
     }
     //se obtiene si ya hay asociación con el vecino de la derecha
-    public boolean isAsoDer() {
+    public Punto isAsoDer() {
         return asoDer;
     }
     //se obtiene si ya hay asociación con el vecino de abajo
-    public boolean isAsoDown() {
+    public Punto isAsoDown() {
         return asoDown;
     }
     //se obtiene si ya hay asociación con el vecino de la izquierda
-    public boolean isAsoIzq() {
+    public Punto isAsoIzq() {
         return asoIzq;
     }
     //se obtiene si ya hay asociación con el vecino de arriba
-    public boolean isAsoUp() {
+    public Punto isAsoUp() {
         return asoUp;
     }
     //se obtiene si ya hay asociación con el vecino del Noreste
-    public boolean isAsoNE() {
+    public Punto isAsoNE() {
         return asoNE;
     }
     //se obtiene si ya hay asociación con el vecino del Noroeste
-    public boolean isAsoNO() {
+    public Punto isAsoNO() {
         return asoNO;
     }
     //se obtiene si ya hay asociación con el vecino del sureste
-    public boolean isAsoSE() {
+    public Punto isAsoSE() {
         return asoSE;
     }
     //se obtiene si ya hay asociación con el vecino de la suroeste
-    public boolean isAsoSO() {
+    public Punto isAsoSO() {
         return asoSO;
     }
 
@@ -105,35 +106,35 @@ public class Punto {
      * trabajan con un argumento (puede ser un int o un boolean dependiendo de la función)
      */
     //se le asigna el estado a la asociación derecha
-    public void setAsoDer(boolean asoDer) {
+    public void setAsoDer(Punto asoDer) {
         this.asoDer = asoDer;
     }
     //se le asigna el estado a la asociación de abajo
-    public void setAsoDown(boolean asoDown) {
+    public void setAsoDown(Punto asoDown) {
         this.asoDown = asoDown;
     }
     //se le asigna el estado a la asociación de arriba
-    public void setAsoUp(boolean asoUp) {
+    public void setAsoUp(Punto asoUp) {
         this.asoUp = asoUp;
     }
     //se le asigna el estado a la asociación izquierda
-    public void setAsoIzq(boolean asoIzq) {
+    public void setAsoIzq(Punto asoIzq) {
         this.asoIzq = asoIzq;
     }
     //se le asigna el estado a la asociación Noreste
-    public void setAsoNE(boolean asoNE) {
+    public void setAsoNE(Punto asoNE) {
         this.asoNE = asoNE;
     }
     //se le asigna el estado a la asociación Noroeste
-    public void setAsoNO(boolean asoNO) {
+    public void setAsoNO(Punto asoNO) {
         this.asoNO = asoNO;
     }
     //se le asigna el estado a la asociación sureste
-    public void setAsoSE(boolean asoSE) {
+    public void setAsoSE(Punto asoSE) {
         this.asoSE = asoSE;
     }
     //se le asigna el estado a la asociación suroeste
-    public void setAsoSO(boolean asoSO) {
+    public void setAsoSO(Punto asoSO) {
         this.asoSO = asoSO;
     }
 
