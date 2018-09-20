@@ -1,7 +1,6 @@
 package Logica;
 
 import Estructuras.Lista;
-import Estructuras.Nodo;
 import Estructuras.Punto;
 
 import java.awt.*;
@@ -11,11 +10,17 @@ import java.util.ArrayList;
 public class Tablero {
     private Lista<Punto> tablero;
     private ArrayList<Polygon> poligonos = new ArrayList<>();
+    private ArrayList<Polygon> figuras1 = new ArrayList<>();
+    private ArrayList<Polygon> figuras2 = new ArrayList<>();
+    private int puntos_j1;
+    private int puntos_j2;
 
-
+    /**
+     * constructor del Tablero
+     */
     public Tablero() {
         Lista<Punto> lista_a = new Lista();
-        for (int i = 0; i <= 500; i += 100) {
+        for (int i = 35; i <= 535; i += 100) {
             for (int j = 100; j <= 600; j += 100) {
                 Punto punto = new Punto(i, j);
                 lista_a.insertFirst(punto);
@@ -24,107 +29,6 @@ public class Tablero {
         this.tablero = lista_a;
 
     }
-/**
-    public boolean recorrer_figuras(Punto from, Punto to) {
-        Punto f = from;
-        Punto t = to;
-        Punto aux = f;
-        while (aux != t) {
-            if (aux.getX() < t.getX() & aux.getY() == t.getY()) {
-                if (t.isAsoSO() != null & t.isAsoSO() != f) {
-                    f = t;
-                    t = t.isAsoSO();
-                    System.out.println("entro");
-                } else if (t.isAsoDown() != null & t.isAsoDown() != null) {
-                    f = t;
-                    t = t.isAsoDown();
-                    System.out.println("entro");
-                } else if (t.isAsoSE() != f & t.isAsoSE() != null) {
-                    f = t;
-                    t = t.isAsoSE();
-                } else if (t.isAsoDer() != null & t.isAsoDer() != f) {
-                    f = t;
-                    t = t.isAsoDer();
-                }
-            }
-            if (aux.getX() > t.getX() & aux.getY() <= t.getY()) {
-                if (t.isAsoDer() != null & t.isAsoDer() != f) {
-                    f = t;
-                    t = t.isAsoDer();
-                    System.out.println("entro");
-                } else if (t.isAsoNE() != null & t.isAsoNE() != f) {
-                    f = t;
-                    t = t.isAsoNE();
-                } else if (t.isAsoUp() != null & t.isAsoUp() != f) {
-                    f = t;
-                    t = t.isAsoUp();
-                    System.out.println("entro");
-                } else if (t.isAsoNO() != null & t.isAsoNO() != f) {
-                    f = t;
-                    t = t.isAsoNO();
-                    System.out.println("entro");
-                } else if (t.isAsoIzq() != null & t.isAsoIzq() != f) {
-                    f = t;
-                    t = t.isAsoIzq();
-            }
-            if (aux.getY() < t.getY() & aux.getX() < t.getX()) {
-                if (t.isAsoSE() != f & t.isAsoSE() != null) {
-                    f = t;
-                    t = t.isAsoSE();
-                } else if (t.isAsoDer() != null & t.isAsoDer() != f) {
-                    f = t;
-                    t = t.isAsoDer();
-                    System.out.println("entro");
-                } else if (t.isAsoNE() != null & t.isAsoNE() != f) {
-                    f = t;
-                    t = t.isAsoNE();
-                    System.out.println("entro");
-                } else if (t.isAsoUp() != null & t.isAsoUp() != f) {
-                    f = t;
-                    t = t.isAsoUp();
-                    System.out.println("entro");
-                } else if (t.isAsoNO() != null & t.isAsoNO() != f) {
-                    f = t;
-                    t = t.isAsoNO();
-                    System.out.println("entro");
-                } else if (t.isAsoIzq() != null & t.isAsoIzq() != f) {
-                    f = t;
-                    t = t.isAsoIzq();
-                } else if (t.isAsoSO() != null & t.isAsoSO() != f) {
-                    f = t;
-                    t = t.isAsoSO();
-                    System.out.println("entro");
-                }
-            }
-            if (aux.getY() < t.getY() & aux.getX() > t.getX()) {
-                if (t.isAsoNE() != null & t.isAsoNE() != f) {
-                    f = t;
-                    t = t.isAsoNE();
-                    System.out.println("entro");
-                } else if (t.isAsoUp() != null & t.isAsoUp() != f) {
-                    f = t;
-                    t = t.isAsoUp();
-                    System.out.println("entro");
-                } else if (t.isAsoNO() != null & t.isAsoNO() != f) {
-                    f = t;
-                    t = t.isAsoNO();
-                    System.out.println("entro");
-                } else if (t.isAsoIzq() != null & t.isAsoIzq() != f) {
-                    f = t;
-                    t = t.isAsoIzq();
-                } else if (t.isAsoSO() != null & t.isAsoSO() != f) {
-                    f = t;
-                    t = t.isAsoSO();
-                    System.out.println("entro");
-                } else if (t.isAsoDown() != null & t.isAsoDown() != null) {
-                    f = t;
-                    t = t.isAsoDown();
-                    System.out.println("entro");
-                }
-            }
-        }return true;
-    }*/
-
             /**
              * función para enlazar o establecer una relación entre 2 puntos de una lista de puntos
              * @param j sirve para identificar el jugador que realiza el enlace
@@ -147,7 +51,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
@@ -162,7 +66,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
@@ -177,7 +81,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
@@ -192,7 +96,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
@@ -207,7 +111,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
@@ -222,7 +126,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador " + j);
                     if (from.vecinos.size() >= 2) {
-                        buscar_figuras(lista, from, to);
+                        buscar_figuras(j,lista, from, to);
                     }
                 }
                 else{
@@ -238,7 +142,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }
                 }
                 else{
@@ -254,7 +158,7 @@ public class Tablero {
                     System.out.println("Puntos enlazados correctamente");
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
-                        buscar_figuras(lista,from,to);
+                        buscar_figuras(j,lista,from,to);
                     }                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
@@ -270,33 +174,29 @@ public class Tablero {
     }
 
     /**
-     * recorre una lista de puntos
-     * imprime las coordenadas x y y de cada punto
+     * función para determinar si hay alguna figura que se completa.
+     * @param j jugador que realiza la línea
+     * @param lista vacía, para ir guardando el recorrido que realiza
+     * @param destino hacia donde se quiere llegar recorriendo los puntos
+     * @param actual donde se encuentra en el momento de realizar las validaciones
      */
-    public void recorrer2() {
-        Nodo<Punto> aux = (Nodo<Punto>) tablero.getHead();
-        while (aux != null) {
-            Punto d = (Punto) aux.getData();
-            System.out.println("X: "+d.getX());
-            System.out.println("Y: "+d.getY());
-            System.out.println("--------");
-            //enviar d por JSON
-            aux = aux.getNext();
-        }
 
-    }
-    public void buscar_figuras(ArrayList<Punto> lista, Punto destino, Punto actual) {
+    public void buscar_figuras(int j,ArrayList<Punto> lista, Punto destino, Punto actual) {
         if (destino == actual & destino.vecinos.size() >= 2) {
-            //si le llega un 1, lo agrega a la lista de jugador 1
-            //si le llega un 2, lo agrega a la lista de jugador 2
             Polygon fig = new Polygon();
             for (Punto p : lista) {
                 fig.addPoint(p.getX(), p.getY());
-                System.out.println("agrego a: X: " + p.getX() + "Y: " + p.getY());
             }
             if (poligonos.size() == 0 & fig.npoints > 2) {
                 poligonos.add(fig);
-                System.out.println(fig.getBounds());
+                if(j == 1){
+                    figuras1.add(fig);  //se agrega la figura a la lista de figuras para el jugador 1
+                    puntajes();
+                }
+                else{
+                    figuras2.add(fig); //se agrega la figura a la lista de figuras para el jugador 2
+                    puntajes();
+                }
                 if (fig.npoints == 3) {
                     System.out.println("Triangulo hecho");
                 } else if (fig.npoints == 4) {
@@ -306,19 +206,29 @@ public class Tablero {
                 }
             } else if (poligonos.size() != 0 & fig.npoints > 2) {
                 if (revisar_p(fig) != null) {
-                    poligonos.add(fig);
+                    poligonos.add(fig); //se agrega  la figura a la lista de polígonos totales en el tablero
+                    if (j == 1) {
+                        figuras1.add(fig); //se agrega la figura a la lista de figuras para el jugador 1
+                        puntajes();
+                    } else {
+                        figuras2.add(fig); //se agrega la figura a la lista de figuras para el jugador 2
+                        puntajes();
+
+                    }
                 }
-            }
                 System.out.println(poligonos.size());
-                for (Polygon p : poligonos) {
-                    System.out.println(p);
+                System.out.println(figuras1.size());
+                System.out.println(figuras2.size());
+                puntajes();
+                for(Polygon p:poligonos){
                     System.out.println(p.getBounds());
                 }
+            }
             } else {
                 for (Punto vecino : actual.vecinos) {
                     if (!lista.contains(vecino)) {
                         lista.add(vecino);
-                        buscar_figuras(lista, destino, vecino);
+                        buscar_figuras(j,lista, destino, vecino);  //se llama a la misma función recursivamente
                         lista.remove(vecino);
                     }
 
@@ -326,21 +236,41 @@ public class Tablero {
 
             }
         }
-        public Polygon revisar_p (Polygon fig){
+
+    /**
+     * revisa si una figura interseca o no con las demás que existen el poligonos(figuras totales en el tablero)
+     * @param fig una figura(poligono) para compararlo con el resto que ya existen
+     * @return fig(poligono) si no interseca con ninguna otra figura, o null en caso contrario.
+     */
+    public Polygon revisar_p (Polygon fig){
             for (Polygon p : poligonos) {
-                Area a = new Area(p);
-                Area b = new Area(fig);
-                Area c = new Area(p);
-                System.out.println(a.getBounds());
-                System.out.println(b.getBounds());
-                System.out.println(b.isEmpty());
+                Area a = new Area(fig);
+                Area b = new Area(p);
+                Area c = new Area(fig);
                 a.subtract(b);
-                System.out.println(fig.intersects(p.getBounds()));
-                System.out.println(b.getBounds());
                 if (!a.equals(c)) {
                     return null;
                 }
             }
             return fig;
         }
+
+    /**
+     * función para determinar los puntajes que llevan cada jugador
+     */
+    public void puntajes(){
+        int suma1 = 0;
+        int suma2=0;
+        for(Polygon p: figuras1){
+            suma1+= (p.npoints*2);
+        }
+        puntos_j1=suma1;
+        for(Polygon p: figuras2){
+            suma2 += (p.npoints*2);
+        }
+        puntos_j2=suma2;
+        System.out.println("puntos jugador1: "+puntos_j1);
+        System.out.println("puntos jugador2: "+puntos_j2);
+        }
+
 }
