@@ -10,12 +10,12 @@ import java.net.*;
  * Controla la salida de datos hacia el servidor.
  *
  */
-public class Conexion_Servidor implements ActionListener{
+public class Conexion_Servidor{
 	
 	
 	private Molde Envio = new Molde(); // Clase molde para los datos a enviar.
 	
-	private DataOutputStream salida;  // 
+	private DataOutputStream salida;  
 
 	private Socket socket;
 	
@@ -34,6 +34,7 @@ public class Conexion_Servidor implements ActionListener{
 		
 		try {
 			this.salida = new DataOutputStream(socket.getOutputStream());
+                        envio();
 		}
 		catch(IOException ex) {
 			System.out.println("Error al crear el Stream de salida :"+ ex.getMessage());
@@ -46,8 +47,8 @@ public class Conexion_Servidor implements ActionListener{
 	}
 
 
-	@Override
-	public void actionPerformed(ActionEvent e) {   // Al presionarse el boton se aciva este método.
+	
+	public void envio() {   // Al presionarse el boton se aciva este mï¿½todo.
 		
 		try {
 			String json = Transformador.convertJavaToJson(Envio);

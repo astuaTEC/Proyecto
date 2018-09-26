@@ -15,7 +15,7 @@ public class Transformador {
 	private static ObjectMapper mapper; // Este es el objeto que permite hacer las conversiones
 	
 	static {
-		mapper = new ObjectMapper(); // Lo hacemos estático
+		mapper = new ObjectMapper(); // Lo hacemos estï¿½tico
 		
 	}
 	
@@ -68,6 +68,7 @@ public class Transformador {
 		return result;
 	}
 }
+
 
 
 

@@ -15,6 +15,8 @@ public class Cliente {
 	private Molde R = new Molde();  // Molde en donde se van a guardar los datos que se desean enviar.
 	
 	private Molde mensaje;
+      
+        private int mi_turno;
 	
 	/**
 	 * Constructor que al iniciarse trata de conectarse al servidor.
@@ -24,7 +26,7 @@ public class Cliente {
 		
 		
 		try {
-			socket = new Socket("localhost", 9999);  // Se conecta al Servidor tomando como par�metro la direccion ip y el puerto.
+			socket = new Socket("localhost", 9999);  // Se conecta al Servidor tomando como par�metro la direccion ip y el puerto.
 		} catch (UnknownHostException ex) {
 			System.out.println("No se ha pidido conectar con el servidor :"+ ex.getMessage());
 			
@@ -62,11 +64,12 @@ public class Cliente {
         while (conectado) {
             try {
                 recibido = entradaDatos.readUTF();  // Almaceno el Json recibido en esta variable de tipo String
-                
-                Molde R = Transformador.convertJsonToJava(recibido, Molde.class); // Se convierte el mensaje Json a un objeto de tipo Molde
-                
-        
-               
+                if(recibido.length()<=3){ // Si el tamaño del String es menor o igual a 3, significa que el servidor mandó el numero de turno
+                    mi_turno = Integer.parseInt(recibido);  // Lo transformo a entero y se lo asigno a la variable mi_turno.  
+                }
+                else if(recibido.length()<10){
+                    Molde R = Transformador.convertJsonToJava(recibido,Molde.class); // Se convierte de JSON a Java Object
+                }  
             } catch (IOException ex) {
                 System.out.println("Error al leer del stream de entrada en el cliente: " + ex.getMessage());
                 conectado = false;

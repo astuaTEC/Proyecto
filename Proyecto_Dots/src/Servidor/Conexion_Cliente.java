@@ -1,14 +1,14 @@
 package Servidor;
 import java.util.*;
-import Estructuras_Tablero.*;
 import java.net.*;
 import Estructuras_Socket.*;
+import Logica.Tablero;
 import java.io.*;
 
 /**
  * Clase que permite crear un hilo para que el Servidor se comunique con cada cliente.
  * 
- * Implementa un Observer para que el Cliente esté a la espera de actualizaciones en la clase MensajesChat.
+ * Implementa un Observer para que el Cliente estï¿½ a la espera de actualizaciones en la clase MensajesChat.
  *
  */
 public class Conexion_Cliente extends Thread implements Observer {
@@ -23,67 +23,120 @@ public class Conexion_Cliente extends Thread implements Observer {
 	
 	private Molde Envio = new Molde();
 	
-	private int turno ;
+	private int turno ; // Esta variable contiene el turno de cada jugador
+        
+        private Tablero tablero;
+        
+        
 	
 	
 	
 	/**
 	 * Constructor del hilo para tratar a los clientes.
 	 * @param socket Socket del cliente al que se le quiere brindar el hilo.
-	 * @param mensajes Objeto observable al que se le va a añadir un observador que será el cliente.
+	 * @param mensajes Objeto observable al que se le va a aï¿½adir un observador que serï¿½ el cliente.
+     * @param tablero
+     * @param turno
 	 */
-	public Conexion_Cliente(Socket socket, MensajesChat mensajes, int turno) {
+	public Conexion_Cliente(Socket socket, MensajesChat mensajes,Tablero tablero, int turno) {
 		
-		this.socket = socket;
-		
-		this.mensajes = mensajes;
-		
-		this.turno = turno;
-		
-		try {
-			
+		this.socket = socket;		
+		this.mensajes = mensajes;				
+                this.tablero = tablero;	
+                this.turno = turno;
+		try {	
 			entrada = new DataInputStream(socket.getInputStream());  // Se le dice que se va a recibir datos del cliente.
 			salida = new DataOutputStream(socket.getOutputStream());  // Se va a enviar datos al Cliente.
-			
 		}
 		
-		catch(Exception e) {
+		catch(IOException e) {
 			System.out.println("Error al crear los stream de entrada y salida :" + e.getMessage());
 		}
 		
 		
 	}
+        public void Notificar_turno(String turno){
+            //String string_turno = Integer.toString(turno);
+            try{
+                 salida.writeUTF(turno);     
+            }
+            catch(IOException e){
+                System.out.println("Error al notificar el turno del jugador");
+            }  
+        }
+   
 	
 
 
+        @Override
 	public void run() {
 		
+		Notificar_turno(Integer.toString(turno));
+                
+                System.out.println("Se ha notificado el turno" + turno);
+                
+		String mensajeRecibido;  
 		
-		String mensajeRecibido;  // Variable que se encarga de almacenar los datos recibidos.
+		boolean conectado = true;   
 		
-		boolean conectado = true;   // booleano que va a validar si están conectados.
-		
-		mensajes.addObserver(this); // Sa apunta al cliente en la lista de observadores.  
+		mensajes.addObserver(this);  
+                
+                
+                
 		
 		while(conectado) {
 			try {
 				
-				mensajeRecibido = entrada.readUTF();  // Lee un mensaje enviado por el cliente.
+				mensajeRecibido = entrada.readUTF();  
+                                
 				Envio = Transformador.convertJsonToJava(mensajeRecibido, Molde.class);
-				 // *******************************************************
 				
-				// CODIGO DE SAYMON
-				
-				
-			
-				
-				
-				String JsonServer = Transformador.convertJavaToJson(Envio);
-				mensajes.setMensaje(JsonServer);  // Pone el mensaje recibido en el objeto observable para que se notifique a los observadores.
-			
-			
+				if(tablero.enlazar(Envio.getJugador(), Envio.getX1(),Envio.getY1(),Envio.getX2(),Envio.getY2()) == true){
+                                    
+                                    
+                                    if(Envio.getJugador()== 1){
+                                        Envio.setTurno(2);
+                                        Envio.setScore1(Integer.toString(tablero.getPuntos1()));
+                                        Envio.setScore2(Integer.toString(tablero.getPuntos2()));
+                                        Envio.setPoligonos1(tablero.getFiguras1());
+                                        Envio.setPoligonos2(tablero.getFiguras2());
+                                        Envio.setAceptacion(true);
+                                        String new_json = Transformador.convertJavaToJson(Envio);
+                                        mensajes.setMensaje(new_json);
+                                    }
+                                    
+                                    else if(Envio.getJugador() == 2){
+                                        Envio.setTurno(1);
+                                        Envio.setScore1(Integer.toString(tablero.getPuntos1()));
+                                        Envio.setScore2(Integer.toString(tablero.getPuntos2()));
+                                        Envio.setPoligonos1(tablero.getFiguras1());
+                                        Envio.setPoligonos2(tablero.getFiguras2());
+                                        Envio.setAceptacion(true);
+                                        String new_json = Transformador.convertJavaToJson(Envio);
+                                        mensajes.setMensaje(new_json);
+                                    }
+                                    
+                                }
+                                else{
+                                    if(Envio.getJugador()== 1){
+                                        Envio.setTurno(2);
+                                        Envio.setAceptacion(false);
+                                         String new_json = Transformador.convertJavaToJson(Envio);
+                                         mensajes.setMensaje(new_json);
+                                        
+                                        
+                                    }
+                                    else if(Envio.getJugador() == 2){
+                                        Envio.setTurno(1);
+                                        Envio.setAceptacion(false);
+                                         String new_json = Transformador.convertJavaToJson(Envio);
+                                         mensajes.setMensaje(new_json);
+                                        
+                                    }
+                                    
+                                }
 			}
-			catch(Exception e) {
+			catch(IOException e) {
 				System.out.println("Cliente con la ip " + socket.getInetAddress() + " " + e.getMessage());
 				
 				conectado = false;
@@ -97,7 +150,7 @@ public class Conexion_Cliente extends Thread implements Observer {
 					
 					salida.close();  // Se cierra la salida.
 				}
-				catch(Exception ex) {
+				catch(IOException ex) {
 					System.out.println("Error al cerrar los streams de entrada y salida : " + ex.getMessage());
 					
 				}

@@ -1,7 +1,9 @@
 package Servidor;
 import Estructuras_Socket.*;
 import Estructuras_Tablero.*;
-import Logica_Tablero.*;
+import Cliente.*;
+import Logica.*;
+import java.io.IOException;
 import java.net.*;
 
 /**
@@ -20,12 +22,12 @@ public class Servidor implements Runnable{
 	private Socket cliente ;
 	
 	private ServerSocket servidor;
+        
+        private Tablero tablero;
 	
-	private boolean en_juego = false;
+	private  boolean en_juego = false;
 	
-	private Socket Juego[] = new Socket[2];
 	
-	private Tablero tablero;
 	
 	/**
 	 * Constructor de la clase Servidor.
@@ -44,32 +46,38 @@ public class Servidor implements Runnable{
 	
 	@Override
 	public void run() {
+            System.out.println("Servidor activado");
 		try {
 			//@SuppressWarnings("resource")
-			Tablero tablero  = new Tablero();
-			ServerSocket servidor = new ServerSocket(9999);
+			tablero  = new Tablero();
+			servidor = new ServerSocket(9999);
+                        int cont_turno = 1;
 			
 			while(true) {
-				//System.out.println("El servidor está escuchando....");
-				Socket cliente = servidor.accept();
+				cliente = servidor.accept();
 				cola.encolar(cliente);
 				
 				System.out.println("El servidor ha aceptado a un cliente");
-				
-				if(en_juego == false & cola.obtenerTamano()>= 2) {
-					for(int i = 1 ; i<3 ; i++) {
-						Conexion_Cliente cc = new Conexion_Cliente(cola.Desencolar(),mensajes, i); // Le mando por el hilo el socket, la clase observable y el turno del jugador
-						cc.start();
-					}
-					System.out.println("El juego ha empezado");
-					en_juego = true;
-				
-				}
-				
-				
+                          
+			
+                                if(en_juego == false & cola.obtenerTamano()>= 2) {
+                                    
+                                    
+                                    int i = 1;
+                                    while(i<3){
+                                        Conexion_Cliente cc;
+                                        cc = new Conexion_Cliente(cola.Desencolar(), mensajes, tablero, i);
+                                        cc.start();
+                                        i++;
+                                    
+                                    }
+                                    
+                                   
+                             
+                                }
 			}
 		}
-		catch(Exception e) {
+		catch(IOException e) {
 			System.out.println("Error"+ e.getMessage());
 		}
 		
@@ -80,7 +88,7 @@ public class Servidor implements Runnable{
 public static void main(String[] args) {
 	Servidor s = new Servidor();
 	
-	Tablero tablero = new Tablero();
+	
 	
 	
 	

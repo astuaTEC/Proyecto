@@ -4,18 +4,33 @@
  * and open the template in the editor.
  */
 package Cliente;
+import java.net.*;
+
+
 
 /**
  *
  * @author kevin Avevedo
  */
 public class Ventana_Inicio extends javax.swing.JFrame {
+    
+    
+    private Socket socket;
+    
+    
 
     /**
      * Creates new form Ventana_Inicio
      */
     public Ventana_Inicio() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Ventana Inicio");
+      
+       
+        
+       
     }
 
     /**
@@ -27,21 +42,89 @@ public class Ventana_Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        boton_jugar = new javax.swing.JButton();
+        IP_Label = new javax.swing.JLabel();
+        IP_TextField = new javax.swing.JTextField();
+        Label_titulo = new javax.swing.JLabel();
+        Fondo = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        boton_jugar.setBackground(new java.awt.Color(255, 255, 0));
+        boton_jugar.setForeground(new java.awt.Color(0, 0, 0));
+        boton_jugar.setText("JUGAR");
+        boton_jugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton_jugarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(boton_jugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 420, 170, 50));
+
+        IP_Label.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        IP_Label.setForeground(new java.awt.Color(153, 153, 255));
+        IP_Label.setText("ESCRIBA LA DIRECCIÓN IP :");
+        getContentPane().add(IP_Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 260, 40));
+
+        IP_TextField.setBackground(new java.awt.Color(0, 153, 153));
+        IP_TextField.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        IP_TextField.setForeground(new java.awt.Color(255, 255, 0));
+        IP_TextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IP_TextFieldActionPerformed(evt);
+            }
+        });
+        getContentPane().add(IP_TextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 230, 30));
+
+        Label_titulo.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 36)); // NOI18N
+        Label_titulo.setForeground(new java.awt.Color(153, 255, 255));
+        Label_titulo.setText("BIENVENIDO A DOTS");
+        getContentPane().add(Label_titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 490, -1));
+
+        Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Cliente/Fondo_log.jpg"))); // NOI18N
+        Fondo.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                FondoAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 646, 484));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void boton_jugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_jugarActionPerformed
+       try{
+           socket = new Socket(IP_TextField.getText(),9999);
+           java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                NewJFrame mi_frame = new NewJFrame(socket);
+                mi_frame.setVisible(true);
+                   
+                }
+                });
+                dispose();
+          
+           
+       } 
+       catch(Exception e){
+           System.out.println("Error al tratar de conectarse al servdor " + e.getMessage());
+           IP_TextField.setText("");
+       }
+
+        
+    }//GEN-LAST:event_boton_jugarActionPerformed
+
+    private void IP_TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IP_TextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IP_TextFieldActionPerformed
+
+    private void FondoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_FondoAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FondoAncestorAdded
 
     /**
      * @param args the command line arguments
@@ -69,15 +152,26 @@ public class Ventana_Inicio extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Ventana_Inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Ventana_Inicio().setVisible(true);
+                
+        
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Fondo;
+    private javax.swing.JLabel IP_Label;
+    private javax.swing.JTextField IP_TextField;
+    private javax.swing.JLabel Label_titulo;
+    private javax.swing.JButton boton_jugar;
     // End of variables declaration//GEN-END:variables
 }
+

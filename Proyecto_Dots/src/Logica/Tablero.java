@@ -1,7 +1,7 @@
 package Logica;
 
-import Estructuras.Lista;
-import Estructuras.Punto;
+import Estructuras_Tablero.Lista;
+import Estructuras_Tablero.Punto;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -20,7 +20,7 @@ public class Tablero {
      */
     public Tablero() {
         Lista<Punto> lista_a = new Lista();
-        for (int i = 35; i <= 535; i += 100) {
+        for (int i =0; i <= 500; i += 100) {
             for (int j = 100; j <= 600; j += 100) {
                 Punto punto = new Punto(i, j);
                 lista_a.insertFirst(punto);
@@ -37,7 +37,7 @@ public class Tablero {
              * @param c la coordenadad en x del punto al que se quiere llegar o hacer el enlace
              * @param d la coordenada en y del punto al que se quiere llegar o hacer el enlace
              */
-    public void enlazar(int j, int a, int b, int c, int d){
+    public boolean enlazar(int j, int a, int b, int c, int d){
         ArrayList<Punto> lista = new ArrayList<>();
         if(tablero.buscar(a,b)!= null & tablero.buscar(c,d)!= null){
             Punto from = tablero.buscar(a,b);
@@ -52,9 +52,14 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
-                    }                }
+                        return true;
+                    }
+                    return true;
+                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                    
                 }
             }
             else if(from.getIzq() == c & from.getY() == d){
@@ -67,9 +72,13 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
-                    }                }
+                        return true;
+                    }
+                    return true;
+                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else if(from.getDown() == d & from.getX() == c){
@@ -82,9 +91,13 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
-                    }                }
+                        return true;
+                    } 
+                    return true;
+                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else if(from.getUp() == d & from.getX() == c){
@@ -97,9 +110,13 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
-                    }                }
+                        return true;
+                    } 
+                    return true;
+                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else if(from.getX()+100 == c & from.getY()-100 == d){
@@ -112,9 +129,13 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
-                    }                }
+                        return true;
+                    } 
+                    return true;
+                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else if(from.getX()+100 == c & from.getY()+100 ==d){
@@ -127,10 +148,13 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador " + j);
                     if (from.vecinos.size() >= 2) {
                         buscar_figuras(j,lista, from, to);
+                        return true;
                     }
+                    return true;
                 }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else if(from.getX()-100 == c & from.getY()-100 == d){
@@ -143,10 +167,13 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
+                        return true;
                     }
+                    return true;
                 }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else if(from.getX()-100 == c & from.getY()+100 == d){
@@ -159,18 +186,25 @@ public class Tablero {
                     System.out.println("Raya hecha por el jugador "+j);
                     if (from.vecinos.size()>=2){
                         buscar_figuras(j,lista,from,to);
-                    }                }
+                        return true;
+                    } 
+                    return true;
+                }
                 else{
                     System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
                 }
             }
             else{
                 System.out.println("Punto inválido");
+                return false;
             }
         }
         else{
             System.out.println("No existe ese punto");
+            return false;
         }
+
     }
 
     /**
@@ -272,4 +306,18 @@ public class Tablero {
         System.out.println("puntos jugador1: "+puntos_j1);
         System.out.println("puntos jugador2: "+puntos_j2);
         }
+    
+    public int getPuntos1(){
+        return this.puntos_j1;
+    }
+    
+    public int getPuntos2(){
+        return this.puntos_j2;
+    }
+    public ArrayList<Polygon> getFiguras1(){
+        return this.figuras1;
+    }
+    public ArrayList<Polygon> getFiguras2(){
+        return this.figuras2;
+    }
 }
