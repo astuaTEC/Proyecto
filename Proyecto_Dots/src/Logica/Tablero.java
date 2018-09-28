@@ -10,11 +10,13 @@ import java.util.ArrayList;
 public class Tablero {
     private Lista<Punto> tablero;
     private ArrayList<Polygon> poligonos = new ArrayList<>();
+    
     private ArrayList<Polygon> figuras1 = new ArrayList<>();
+    
     private ArrayList<Polygon> figuras2 = new ArrayList<>();
     private int puntos_j1;
     private int puntos_j2;
-
+   
     /**
      * constructor del Tablero
      */
@@ -216,10 +218,11 @@ public class Tablero {
      */
 
     public void buscar_figuras(int j,ArrayList<Punto> lista, Punto destino, Punto actual) {
+        System.out.println("Entro papi");
         if (destino == actual & destino.vecinos.size() >= 2) {
             Polygon fig = new Polygon();
             for (Punto p : lista) {
-                fig.addPoint(p.getX(), p.getY());
+                fig.addPoint(p.getX()+8, p.getY()-93);
             }
             if (poligonos.size() == 0 & fig.npoints > 2) {
                 poligonos.add(fig);
@@ -293,16 +296,14 @@ public class Tablero {
      * función para determinar los puntajes que llevan cada jugador
      */
     public void puntajes(){
-        int suma1 = 0;
-        int suma2=0;
+        
         for(Polygon p: figuras1){
-            suma1+= (p.npoints*2);
+           puntos_j1 += (p.npoints*2);
         }
-        puntos_j1=suma1;
+        
         for(Polygon p: figuras2){
-            suma2 += (p.npoints*2);
+            puntos_j2= (p.npoints*2);
         }
-        puntos_j2=suma2;
         System.out.println("puntos jugador1: "+puntos_j1);
         System.out.println("puntos jugador2: "+puntos_j2);
         }
@@ -319,5 +320,11 @@ public class Tablero {
     }
     public ArrayList<Polygon> getFiguras2(){
         return this.figuras2;
+    }
+    public void setFiguras1(ArrayList<Polygon> L){
+        figuras1 = L;
+    }
+    public void setFiguras2(ArrayList<Polygon> L){
+        figuras2 = L;
     }
 }

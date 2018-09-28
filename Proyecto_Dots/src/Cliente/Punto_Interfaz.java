@@ -8,6 +8,7 @@ package Cliente;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 /**
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 public class Punto_Interfaz extends JPanel  {
         private ArrayList<Point> lista1 = new ArrayList<Point>();
         //private Graphics g = this.getGraphics();
+        private ArrayList<Polygon> poligonos = new ArrayList();
 
      public Punto_Interfaz (){
          this.setBackground(Color.WHITE);
@@ -53,8 +55,27 @@ Graphics g = this.getGraphics();
   
       
 }
-
-
-
+public void dibujar_fig(ArrayList<Polygon> L1,int turno){
+    Graphics g = this.getGraphics();
+    if(turno ==1 & L1.size()>0){
+        for(Polygon p: L1){
+                //poligonos.add(p);
+                g.setColor(Color.red);
+                g.fillPolygon(p);
+            //L1.clear();
+                g.drawPolygon(p);}
+       
+    }
+    if(turno ==2 & L1.size()>0){      
+         for(Polygon p: L1){
+          
+                //poligonos.add(p);
+                g.setColor(Color.DARK_GRAY);
+                g.fillPolygon(p);
+            //L1.clear();
+                g.drawPolygon(p);
+         }
+}
+    }
 }
 

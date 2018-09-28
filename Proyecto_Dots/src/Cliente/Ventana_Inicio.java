@@ -15,9 +15,7 @@ import java.net.*;
 public class Ventana_Inicio extends javax.swing.JFrame {
     
     
-    private Socket socket;
-    
-    
+    private Socket socket;    
 
     /**
      * Creates new form Ventana_Inicio

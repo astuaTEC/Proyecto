@@ -9,9 +9,12 @@ package Cliente;
 import Estructuras_Socket.Molde;
 import Estructuras_Socket.Transformador;
 import estructuras_Socket.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.*;
@@ -36,6 +39,7 @@ public class NewJFrame extends javax.swing.JFrame implements Runnable{
     private int mi_turno;
     private JTextField IP_TextField;
     private Conexion_Servidor conexion__servidor;
+    private AudioClip clip = Applet.newAudioClip(getClass().getResource("/Cliente/PimPoy.wav"));
     /**
      * Creates new form NewJFrame
      */
@@ -49,7 +53,7 @@ public class NewJFrame extends javax.swing.JFrame implements Runnable{
        setLocationRelativeTo(null);
        setResizable(false);
        setTitle("DOTS");
-       
+       clip.loop();
        
        
         
@@ -193,6 +197,8 @@ public class NewJFrame extends javax.swing.JFrame implements Runnable{
                 mensaje.setY1(lista.get(1));
                 mensaje.setX2(lista.get(2));
                 mensaje.setY2(lista.get(3));
+                Conexion_Servidor cs = new Conexion_Servidor(socket,mensaje);
+                lista.clear();
                 Desbloquear_Boton();
         }}}
         
@@ -226,12 +232,26 @@ public class NewJFrame extends javax.swing.JFrame implements Runnable{
         while (conectado) {
             try {
                recibido = entradaDatos.readUTF();  // Almaceno el Json recibido en esta variable de tipo String
+               
                 if(recibido.length()== 1){ // Si el tamaño del String es menor o igual a 3, significa que el servidor mandó el numero de turno
                     mi_turno = Integer.parseInt(recibido);  // Lo transformo a entero y se lo asigno a la variable mi_turno. 
                     mensaje.setTurno(mi_turno);
                     mensaje_recibido.setTurno(1);
                     
                     hablar("Entro al if");
+                }
+                else if(recibido.contains("npoints")){
+                    hablar("Entro goku");
+                    ArrayList<Polygon> a = new ArrayList();
+                    ArrayList<Polygon> pf = Transformador.convertJsonToJava2(recibido,a);
+                    System.out.println(pf.get(0).getBounds());
+                    if(pf.size()>0 ){
+                          puntos.dibujar_fig(pf,mensaje_recibido.getTurno());
+                        
+                      }
+                    else{
+                         System.out.println("No hay figura");
+                    }
                 }
                 else{
                     hablar("Entro al else");
@@ -250,12 +270,10 @@ public class NewJFrame extends javax.swing.JFrame implements Runnable{
                    mensaje_recibido.setY1(R.getY1());
                    mensaje_recibido.setY2(R.getY2());
                    mensaje_recibido.setAceptacion(R.getAceptacion());
-                   mensaje_recibido.setPoligonos1(R.getPoligonos1());
-                   mensaje_recibido.setPoligonos2(R.getPoligonos2());
                    if(mensaje_recibido.getAceptacion() == true){
                        System.out.println("Llego papi 5");
                        puntos.dibujar(mensaje_recibido.getX1(), mensaje_recibido.getY1(), mensaje_recibido.getX2(), mensaje_recibido.getY2(), mensaje_recibido.getJugador());
-                   }
+                                         }
                    
                 }
                

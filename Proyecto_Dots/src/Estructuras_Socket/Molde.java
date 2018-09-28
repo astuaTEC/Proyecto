@@ -2,14 +2,17 @@ package Estructuras_Socket;
 import java.awt.Polygon;
 import java.io.*;
 import java.util.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import org.codehaus.jackson.map.annotate.JsonView;
 //se le da el orden de las claves
 /**
 * Esta clase permite meter todos los datos que queremos enviar al servidor, usando los atributos de la misma clase.
 *
 */
-@JsonPropertyOrder(value = {"jugador", "nombre","x1","y1","x2","y2", "Score1", "Score2","turno","estado_juego","poligonos1","poligonos2","aceptacion"}) // El orden que van a tener los elementos cuando se conviertan en Json Strings
+@JsonPropertyOrder(value = {"jugador", "nombre","x1","y1","x2","y2", "Score1", "Score2","turno","estado_juego","aceptacion"}) // El orden que van a tener los elementos cuando se conviertan en Json Strings
 public class Molde implements Serializable {
 	
 	private String Nombre;
@@ -27,12 +30,12 @@ public class Molde implements Serializable {
 	private int y1;
 	
 	private int x2;
-	
+
 	private int y2;
         
-        private ArrayList<Polygon> poligonos1 = new ArrayList<>();
-        
-        private ArrayList<Polygon> poligonos2 = new ArrayList<>();
+        //private ArrayList<Polygon> poligonos1 = new ArrayList<>();
+        @JsonIgnore
+        //private ArrayList<Polygon> poligonos2 = new ArrayList<>();
 	
 	private boolean estado_juego;
         
@@ -45,20 +48,7 @@ public class Molde implements Serializable {
 	public void setEstado_juego(boolean estado_juego) {
 		this.estado_juego = estado_juego;
 	}
-        public void setPoligonos1(ArrayList poligono){
-            this.poligonos1 = poligono;
-        }
-        public ArrayList<Polygon>getPoligonos1(){
-            return poligonos1;
-            
-        }
-        public void setPoligonos2(ArrayList poligono){
-            this.poligonos2 = poligono;
-        }
-        public ArrayList<Polygon>getPoligonos2(){
-            return poligonos2;
-        }
-
+      
 	public int getX1() {
 		return x1;
 	}
