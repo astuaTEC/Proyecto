@@ -1,0 +1,342 @@
+package Logica;
+
+import Estructuras_Tablero.Lista;
+import Estructuras_Tablero.Punto;
+
+import java.awt.*;
+import java.awt.geom.Area;
+import java.util.ArrayList;
+/**
+ * Esta clase maneja el tablero de forma logica en el juego (contiene Una lista enlazada para su representacion)
+ * @author Saymon Astua
+ * @since 2018
+ */
+public class Tablero {
+    private Lista<Punto> tablero;
+    private ArrayList<Polygon> poligonos = new ArrayList<>();
+    
+    private ArrayList<Polygon> figuras1 = new ArrayList<>();
+    
+    private ArrayList<Polygon> figuras2 = new ArrayList<>();
+    private int puntos_j1;
+    private int puntos_j2;
+   
+    /**
+     * constructor del Tablero
+     */
+    public Tablero() {
+        Lista<Punto> lista_a = new Lista();
+        for (int i =0; i <= 500; i += 100) {
+            for (int j = 100; j <= 600; j += 100) {
+                Punto punto = new Punto(i, j);
+                lista_a.insertFirst(punto);
+            }
+        }
+        this.tablero = lista_a;
+
+    }
+            /**
+             * función para enlazar o establecer una relación entre 2 puntos de una lista de puntos
+             * @param j sirve para identificar el jugador que realiza el enlace
+             * @param a la coordenada en x del punto desde donde se parte
+             * @param b la coordenada en y del punto desde donde se parte
+             * @param c la coordenadad en x del punto al que se quiere llegar o hacer el enlace
+             * @param d la coordenada en y del punto al que se quiere llegar o hacer el enlace
+             */
+    public boolean enlazar(int j, int a, int b, int c, int d){
+        ArrayList<Punto> lista = new ArrayList<>();
+        if(tablero.buscar(a,b)!= null & tablero.buscar(c,d)!= null){
+            Punto from = tablero.buscar(a,b);
+            Punto to = tablero.buscar(c,d);
+            if(from.getDer()== c & from.getY() ==d){
+                if(from.isAsoDer()== null & to.isAsoIzq()==null){
+                    from.setAsoDer(to);
+                    from.vecinos.add(to);
+                    to.setAsoIzq(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    }
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                    
+                }
+            }
+            else if(from.getIzq() == c & from.getY() == d){
+                if(from.isAsoIzq()== null & to.isAsoDer()== null){
+                    from.setAsoIzq(to);
+                    from.vecinos.add(to);
+                    to.setAsoDer(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    }
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else if(from.getDown() == d & from.getX() == c){
+                if(from.isAsoDown()==null & to.isAsoUp() == null){
+                    from.setAsoDown(to);
+                    from.vecinos.add(to);
+                    to.setAsoUp(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    } 
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else if(from.getUp() == d & from.getX() == c){
+                if( from.isAsoUp()== null & to.isAsoDown()==null){
+                    from.setAsoUp(to);
+                    from.vecinos.add(to);
+                    to.setAsoDown(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    } 
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else if(from.getX()+100 == c & from.getY()-100 == d){
+                if(from.isAsoNE()== null & to.isAsoSO()== null){
+                    from.setAsoNE(to);
+                    from.vecinos.add(to);
+                    to.setAsoSO(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    } 
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else if(from.getX()+100 == c & from.getY()+100 ==d){
+                if(from.isAsoSE()== null & to.isAsoNO()==null) {
+                    from.setAsoSE(to);
+                    from.vecinos.add(to);
+                    to.setAsoNO(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador " + j);
+                    if (from.vecinos.size() >= 2) {
+                        buscar_figuras(j,lista, from, to);
+                        return true;
+                    }
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else if(from.getX()-100 == c & from.getY()-100 == d){
+                if(from.isAsoNO()== null & to.isAsoSE()== null){
+                    from.setAsoNO(to);
+                    from.vecinos.add(to);
+                    to.setAsoSE(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    }
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else if(from.getX()-100 == c & from.getY()+100 == d){
+                if(from.isAsoSO()==null & to.isAsoNE()==null){
+                    from.setAsoSO(to);
+                    from.vecinos.add(to);
+                    from.setAsoNE(from);
+                    to.vecinos.add(from);
+                    System.out.println("Puntos enlazados correctamente");
+                    System.out.println("Raya hecha por el jugador "+j);
+                    if (from.vecinos.size()>=2){
+                        buscar_figuras(j,lista,from,to);
+                        return true;
+                    } 
+                    return true;
+                }
+                else{
+                    System.out.println("Los puntos ya se encuentran enlazados");
+                    return false;
+                }
+            }
+            else{
+                System.out.println("Punto inválido");
+                return false;
+            }
+        }
+        else{
+            System.out.println("No existe ese punto");
+            return false;
+        }
+
+    }
+
+    /**
+     * función para determinar si hay alguna figura que se completa.
+     * @param j jugador que realiza la línea
+     * @param lista vacía, para ir guardando el recorrido que realiza
+     * @param destino hacia donde se quiere llegar recorriendo los puntos
+     * @param actual donde se encuentra en el momento de realizar las validaciones
+     */
+
+    public void buscar_figuras(int j,ArrayList<Punto> lista, Punto destino, Punto actual) {
+        if (destino == actual & destino.vecinos.size() >= 2) {
+            Polygon fig = new Polygon();
+            for (Punto p : lista) {
+                fig.addPoint(p.getX()+8, p.getY()-93);
+            }
+            if (poligonos.isEmpty() & fig.npoints > 2) {
+                poligonos.add(fig);
+                if(j == 1){
+                    figuras1.add(fig);  //se agrega la figura a la lista de figuras para el jugador 1
+                    puntajes();
+                }
+                else{
+                    figuras2.add(fig); //se agrega la figura a la lista de figuras para el jugador 2
+                    puntajes();
+                }
+            } else if (!poligonos.isEmpty() & fig.npoints > 2) {
+                if (revisar_p(fig) != null) {
+                    poligonos.add(fig); //se agrega la figura a la lista de polígonos totales en el tablero
+                    if (j == 1) {
+                        figuras1.add(fig); //se agrega la figura a la lista de figuras para el jugador 1
+                        puntajes();
+                    } else {
+                        figuras2.add(fig); //se agrega la figura a la lista de figuras para el jugador 2
+                        puntajes();
+                    }
+                }
+            }
+            } else {
+                for (Punto vecino : actual.vecinos) {
+                    if (!lista.contains(vecino)) {
+                        lista.add(vecino);
+                        buscar_figuras(j,lista, destino, vecino);  //se llama a la misma función recursivamente
+                        lista.remove(vecino);
+                    }
+
+                }
+
+            }
+        }
+
+    /**
+     * revisa si una figura interseca o no con las demás que existen el poligonos(figuras totales en el tablero)
+     * @param fig una figura(poligono) para compararlo con el resto que ya existen
+     * @return fig(poligono) si no interseca con ninguna otra figura, o null en caso contrario.
+     */
+    public Polygon revisar_p (Polygon fig){
+            for (Polygon p : poligonos) {
+                Area a = new Area(fig);
+                Area b = new Area(p);
+                Area c = new Area(fig);
+                a.subtract(b);
+                if (!a.equals(c)) {
+                    return null;
+                }
+            }
+            return fig;
+        }
+
+    /**
+     * función para determinar los puntajes que llevan cada jugador
+     */
+    public void puntajes(){
+        
+        for(Polygon p: figuras1){
+           puntos_j1 += (p.npoints*2);
+        }
+        
+        for(Polygon p: figuras2){
+            puntos_j2+= (p.npoints*2);
+        }
+        System.out.println("puntos jugador1: "+puntos_j1);
+        System.out.println("puntos jugador2: "+puntos_j2);
+        }
+    
+    
+    /**
+     * geter de los puntos del jugador 1
+     * @return  la cantidad de  puntos del jugador 1
+     */
+    public int getPuntos1(){
+        return this.puntos_j1;
+    }
+    /**
+     * geter de los puntos del jugador 2
+     * @return la cantidad de puntos del jugador 2
+     */
+    public int getPuntos2(){
+        return this.puntos_j2;
+    }
+    /**
+     * geter de las figuras del jugador 1
+     * @return un arraylis con las figuras
+     */
+    public ArrayList<Polygon> getFiguras1(){
+        return this.figuras1;
+    }
+    /**
+     * geter de las figuras del jugador 2
+     * @return un arraylist de las figuras
+     */
+    public ArrayList<Polygon> getFiguras2(){
+        return this.figuras2;
+    }
+    /**
+     * seter para las figuras del jugador 1
+     * @param L Un arraylist
+     */
+    public void setFiguras1(ArrayList<Polygon> L){
+        figuras1 = L;
+    }
+    /**
+     * seter para las figuras del jugador 2
+     * @param L un arraylist
+     */
+    public void setFiguras2(ArrayList<Polygon> L){
+        figuras2 = L;
+    }
+}
